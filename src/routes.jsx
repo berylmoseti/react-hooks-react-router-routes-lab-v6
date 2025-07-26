@@ -1,11 +1,10 @@
-import { createBrowserRouter } from "react-router-dom";
-import Home from "./pages/Home";
-import Directors from "./pages/Directors";
-import Actors from "./pages/Actors";
-import Movie from "./pages/Movie";
-import ErrorPage from "./pages/ErrorPage";
+import Home from './pages/Home';
+import Directors from './pages/Directors';
+import Actors from './pages/Actors';
+import Movie from './pages/Movie';
+import ErrorPage from './pages/ErrorPage';
 
-const routes = createBrowserRouter([
+const routes = [
   {
     path: "/",
     element: <Home />,
@@ -17,7 +16,7 @@ const routes = createBrowserRouter([
     errorElement: <ErrorPage />
   },
   {
-    path: "/actors", 
+    path: "/actors",
     element: <Actors />,
     errorElement: <ErrorPage />
   },
@@ -26,6 +25,6 @@ const routes = createBrowserRouter([
     element: <Movie />,
     errorElement: <ErrorPage />
   }
-]);
+];
 
 export default routes;

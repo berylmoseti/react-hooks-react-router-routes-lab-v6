@@ -7,9 +7,19 @@ function Home() {
 
   useEffect(() => {
     fetch("http://localhost:4000/movies")
-      .then(response => response.json())
-      .then(data => setMovies(data))
-      .catch(error => console.error("Error fetching movies:", error));
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
+      .then(data => {
+        console.log('Fetched movies:', data);
+        setMovies(data);
+      })
+      .catch(error => {
+        console.error('Error fetching movies:', error);
+      });
   }, []);
 
   return (
@@ -19,11 +29,13 @@ function Home() {
       </header>
       <main>
         <h1>Home Page</h1>
-        <div>
-          {movies.map(movie => (
+        {movies.length > 0 ? (
+          movies.map(movie => (
             <MovieCard key={movie.id} movie={movie} />
-          ))}
-        </div>
+          ))
+        ) : (
+          <p>Loading movies...</p>
+        )}
       </main>
     </>
   );

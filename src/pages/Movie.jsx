@@ -1,15 +1,32 @@
 import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import NavBar from "../components/NavBar";
 
-function Actors() {
-  const [actors, setActors] = useState([]);
+function Movie() {
+  const { id } = useParams();
+  const [movie, setMovie] = useState(null);
 
   useEffect(() => {
-    fetch("http://localhost:4000/actors")
-      .then(response => response.json())
-      .then(data => setActors(data))
-      .catch(error => console.error("Error fetching actors:", error));
-  }, []);
+    if (id) {
+      fetch(`http://localhost:4000/movies/${id}`)
+        .then(response => response.json())
+        .then(data => setMovie(data))
+        .catch(error => console.error('Error fetching movie:', error));
+    }
+  }, [id]);
+
+  if (!movie) {
+    return (
+      <>
+        <header>
+          <NavBar />
+        </header>
+        <main>
+          <div>Loading...</div>
+        </main>
+      </>
+    );
+  }
 
   return (
     <>
@@ -17,20 +34,14 @@ function Actors() {
         <NavBar />
       </header>
       <main>
-        <h1>Actors Page</h1>
-        {actors.map(actor => (
-          <article key={actor.id}>
-            <h2>{actor.name}</h2>
-            <ul>
-              {actor.movies?.map((movie, index) => (
-                <li key={index}>{movie}</li>
-              ))}
-            </ul>
-          </article>
+        <h1>{movie.title}</h1>
+        <p>{movie.time}</p>
+        {movie.genres.map((genre, index) => (
+          <span key={index}>{genre}</span>
         ))}
       </main>
     </>
   );
 }
 
-export default Actors;
+export default Movie;
